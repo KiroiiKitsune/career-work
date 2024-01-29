@@ -218,7 +218,7 @@ export const SettingsApp = styled.div``;
 export const SettingsBlock = styled.div`
   display: flex;
   flex-direction: column;
-  height: ${({ $settingsVisible }) => ($settingsVisible ? '100vh' : '0')};
+  height: ${({ $settingsVisible }) => ($settingsVisible ? '34vh' : '0')};
   overflow: hidden;
   z-index: 10;
   transition: height 0.5s ease;

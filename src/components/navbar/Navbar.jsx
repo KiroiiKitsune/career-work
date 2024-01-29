@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { BtnMode } from '../btnMode/BtnMode';
 import settingsIcon from './settings.png';
 import logo from './logo.png';
-import * as S from './styles';
+import * as S from './navbar.styled';
 
 export const Navbar = ({ transcription, setTranscription }) => {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -31,7 +31,7 @@ export const Navbar = ({ transcription, setTranscription }) => {
           <NavLink to='/'>
             <S.Logo>
               <S.LogoImg src={logo}/>
-              <strong>GitHub-Search</strong>
+              <strong>GitHub-<font color="#5c62ec">Search</font></strong>
             </S.Logo>
           </NavLink>
 
@@ -91,7 +91,7 @@ export const Navbar = ({ transcription, setTranscription }) => {
                 <S.MenuLink to='/' $activeClassName="active">Home</S.MenuLink>
               </S.ButtonLink>
               <S.ButtonLink onClick={closerAllModals}>
-                <S.MenuLink to='/surfer' $activeClassName="active">Surfer</S.MenuLink>
+                <S.MenuLink to='/surfer' $activeClassName="active">Search</S.MenuLink>
               </S.ButtonLink>
               <S.Closer onClick={closerAllModals}>Закрыть</S.Closer>
             </S.MenuBlock>

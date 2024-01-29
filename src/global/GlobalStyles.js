@@ -155,9 +155,9 @@ button::-moz-focus-inner {
 
 :root {
   --white: #fff;
-  --purple: #282ebb;
+  --purple: #5c62ec;
   --id-word: #012169;
-  --accent: #1a25bd;
+  --accent: #5c62ec;
 
   --nav-bg: #000;
   --nav-border: #777;
@@ -171,7 +171,7 @@ button::-moz-focus-inner {
 }
 
   :root[data-theme='light'] {
-  --page-bg: #fff; 
+  --page-bg: #dedede; 
   --page-bg-tab: #eee; 
   --text-color: #555; 
   --title-1: #555;
@@ -184,6 +184,6 @@ button::-moz-focus-inner {
   --text-color: #ccc;
   --title-1: #ccc;
   --id-word: #c8102e;
-  --bg-card: #202871;
+  --bg-card: #081420;
 }
 `;

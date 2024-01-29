@@ -46,6 +46,7 @@ export const UsersInput = styled.input`
   border-radius: 6px;
   height: 40px;
   padding-left: 10px;
+  padding-right: 10px;
 `;
 
 export const UserSearchBtn = styled.button`
@@ -54,13 +55,13 @@ export const UserSearchBtn = styled.button`
   background-color: var(--purple);
   border-radius: 6px;
   padding: 10px;
-  color: ${props => props.disabled ? '#bbb' : '#fff'};
+  color: ${(props) => (props.disabled ? '#bbb' : '#fff')};
   &: hover {
     background-color: #282d93;
     color: white;
   }
   @media screen and (max-width: 425px) {
-   width: 100%;
+    width: 100%;
   }
 `;
 
@@ -71,6 +72,7 @@ export const SearchWarning = styled.p`
 
 export const Loader = styled.img`
   width: 50px;
+  margin-bottom: 30px;
 `;
 
 export const SortBlock = styled(SearchBlock)`
@@ -89,6 +91,28 @@ export const SortTextResults = styled.div`
 
 export const SortStart = styled(UserSearchBtn)`
   width: 150px;
+  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+  position: relative;
+`;
+
+export const Tooltip = styled.span`
+  visibility: hidden;
+  width: 120px;
+  height: 0;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+
+  ${SortStart}:hover & {
+    visibility: visible;
+    height: auto;
+  }
 `;
 
 export const UsersList = styled.ul`
@@ -97,6 +121,7 @@ export const UsersList = styled.ul`
   flex-wrap: wrap;
   gap: 25px;
   justify-content: center;
+  padding-bottom: 50px;
 `;
 
 export const UsersItem = styled.li`
@@ -120,7 +145,7 @@ export const UserTextBlock = styled.div`
   font-size: 1rem;
   word-break: break-word;
   color: var(--text-color);
-  padding-top: 10px;
+  padding-top: 20px;
   padding-bottom: 10px;
   display: flex;
   flex-direction: column;
@@ -129,20 +154,3 @@ export const UserTextBlock = styled.div`
 
 export const UserItemText = styled.p``;
 
-export const ToTop = styled.button`
-  position: fixed;
-  bottom: 55px;
-  right: 0;
-  padding: 10px 20px;
-  width: auto;
-  background-color: var(--id-word);
-  color: #eee;
-  border-radius: 20px 0 0 0;
-  font-size: 1.2rem;
-  &: hover {
-    background-color: #555;
-  }
-  &: active {
-    background-color: #333;
-  }
-`;
