@@ -67,7 +67,7 @@ export const UserSearch = () => {
       <button onClick={handleSearch} disabled={query.length < 3}>
         Поиск
       </button>
-      <div>Имя пользователя должно содержать не мение 3 символов</div>
+      <div>Имя пользователя должно содержать 3 и более символа</div>
       <button onClick={handleSort}>Сортировать</button>
       {error && <p>Error: {error.message}</p>}
       <ul>

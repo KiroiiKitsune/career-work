@@ -3,9 +3,9 @@ export async function apiSearch(query) {
       const response = await fetch(
         `https://api.github.com/search/users?q=${query}`,
       );
-      const data = await response.json();
-      return { data, error: null };
+      const dataUsers = await response.json();
+      return { dataUsers, error: null };
     } catch (error) {
-      return { data: null, error };
+      return { dataUsers: null, error };
     }
   }
