@@ -5,7 +5,7 @@ export const Section = styled.main`
   height: auto;
   background-color: var(--page-bg);
   color: var(--text-color);
-  opacity: 0.9;
+  opacity: 0.97;
   margin-top: 100px;
   border-radius: 20px;
   margin-bottom: 30px;

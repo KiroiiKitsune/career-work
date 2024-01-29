@@ -1,4 +1,4 @@
-export async function apiSearch(query) {
+export async function getUsers(query) {
     try {
       const response = await fetch(
         `https://api.github.com/search/users?q=${query}`,

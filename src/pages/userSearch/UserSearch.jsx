@@ -1,35 +1,33 @@
-import { useState } from 'react';
-import { apiSearch } from '../../api/apiSearch';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import loader from './loader.gif'
-import * as S from './styles';
+import { getUsers } from '../../api/apiGetUsers';
+import { getSortedUsers } from '../../api/apiGetSortedUsers';
+import loader from '../loader.gif';
+import * as S from './userSearch.styled.js';
 
 export const UserSearch = ({ users, setUsers }) => {
   const [query, setQuery] = useState('');
+  const inputRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [sortOrder, setSortOrder] = useState('По возрастанию');
+  const [totalCount, setTotalCount] = useState(0);
+  const [sortOrder, setSortOrder] = useState('desc');
 
   const handleSearch = async () => {
+    inputRef.current.value = '';
     setIsLoading(true);
-    const { dataUsers, error } = await apiSearch(query);
+    const { dataUsers, error } = await getUsers(query);
     if (dataUsers) {
-      const updatedUsers = await Promise.all(
-        dataUsers.items.map(async (user) => {
-          const reposResponse = await fetch(user.repos_url);
-          const reposData = await reposResponse.json();
-          return {
-            ...user,
-            reposCount: reposData.length,
-          };
-        }),
-      );
-      setUsers(updatedUsers);
+      setUsers(dataUsers.items);
       setError(null);
-      setQuery('');
+      setTotalCount(dataUsers.total_count);
     } else {
-      setUsers([]);
-      setError(error);
+      if (error.response) {
+        setError('Неизвестная ошибка');
+      } else {
+        setUsers([]);
+        setError(error);
+      }
     }
     setIsLoading(false);
   };
@@ -44,19 +42,18 @@ export const UserSearch = ({ users, setUsers }) => {
     setQuery(event.target.value);
   };
 
-  const handleSort = () => {
-    const sortedUsers = [...users];
-    sortedUsers.sort((user1, user2) => {
-      if (sortOrder === 'По возрастанию') {
-        return user1.reposCount - user2.reposCount;
-      } else {
-        return user2.reposCount - user1.reposCount;
-      }
+  const handleSort = async () => {
+    inputRef.current.value = '';
+    setIsLoading(true);
+    const newSortOrder = sortOrder === 'desc' ? 'asc' : 'desc';
+    const dataUsers = await getSortedUsers({
+      query,
+      sortOrder: newSortOrder,
     });
-    setUsers(sortedUsers);
-    setSortOrder(
-      sortOrder === 'По возрастанию' ? 'По убыванию' : 'По возрастанию',
-    );
+
+    setUsers(dataUsers.items);
+    setSortOrder(newSortOrder);
+    setIsLoading(false);
   };
 
   const handleScrollToTop = () => {
@@ -69,8 +66,9 @@ export const UserSearch = ({ users, setUsers }) => {
         <S.SearchBlock>
           <S.SearchFinder>
             <S.UsersInput
-              type='text'
+              type='search'
               value={query}
+              ref={inputRef}
               onChange={handleInputChange}
               onKeyDown={handleKeyPress}
               placeholder='Введите логин'
@@ -84,14 +82,23 @@ export const UserSearch = ({ users, setUsers }) => {
           </S.SearchWarning>
         </S.SearchBlock>
         {isLoading && <S.Loader src={loader} />}
+        {users.length === 0 && !isLoading && !error && (
+          <S.UserItemText>Пока нет данных</S.UserItemText>
+        )}
         {users.length > 0 && (
           <>
-            <S.SortTextResults>Результаты поиска:</S.SortTextResults>
+            <S.SortTextResults>
+              Новых результатов: {totalCount}
+            </S.SortTextResults>
             <S.SortBlock>
               <S.SortText>Сортировать по кол-ву репозиториев:</S.SortText>
-              <S.SortStart onClick={handleSort}>{sortOrder}</S.SortStart>
+              <S.SortStart onClick={handleSort} disabled={!query}>
+                {sortOrder === 'asc' ? 'По убыванию' : 'По возрастанию'}
+                <S.Tooltip>{!query && 'Сделайте новый запрос'}</S.Tooltip>
+              </S.SortStart>
             </S.SortBlock>
             {error && <S.UserItemText>Error: {error.message}</S.UserItemText>}
+
             <S.UsersList>
               {users.map((user, index) => (
                 <S.UsersItem key={index}>
@@ -99,9 +106,6 @@ export const UserSearch = ({ users, setUsers }) => {
                     <S.UserImg src={user.avatar_url} alt={user.login} />
                     <S.UserTextBlock>
                       <S.UserItemText>Логин: {user.login}</S.UserItemText>
-                      <S.UserItemText>
-                        Репозиториев: {user.reposCount}
-                      </S.UserItemText>
                     </S.UserTextBlock>
                   </Link>
                 </S.UsersItem>

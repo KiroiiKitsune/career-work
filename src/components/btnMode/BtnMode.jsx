@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import sun from './sun.png';
 import moon from './moon.png';
-import '../../styles/main.js';
-import * as S from './styles';
+import * as S from './BtnMode.styled.js';
 
 export const BtnMode = () => {
   const [currentTheme, setCurrentTheme] = useState('light');
